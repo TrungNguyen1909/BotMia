@@ -145,7 +145,6 @@ def makeWeatherWebhookResult(data,time,req):
                 "elements": [
                     {
                         "title": "Weather from The Weather Channel LLC:",
-                        "image": data.get('icon'),
                         "subtitle": speech,
                         "buttons": [
                             {
