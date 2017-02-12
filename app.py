@@ -38,12 +38,14 @@ def processRequest(req):
         else:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
-            data=a.read_forecast()
             time="future"
         else:
-            data=a.read_current()
             time="present"
         a=pywu.ForecastData(args)
+        if time=="future":
+            data=a.read_forecast()
+        else:
+            data=a.read_current()
         res = makeWebhookResult(data,time,req)
         return res
 
