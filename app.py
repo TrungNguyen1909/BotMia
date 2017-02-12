@@ -88,6 +88,14 @@ def makeWeatherWebhookResult(data,time,req):
              ", the lowest temperature is " + str(data.get('low_c')) + "C and the highest one is " + str(data.get('high_c'))+"C"
     print("Response:")
     print(speech)
+    now =datetime.now()
+    if now.hour>20 or now.hour<6:
+        iconmode="a"
+    else:
+        iconmode="k"
+    icon=data.get('condition').replace(" ", "")
+    icon=icon.lower()
+    url= "http://icons.wxug.com/i/c/"+iconmode+"/nt_"+icon+".gif"
     if time=="present":
         slack_message = {
             "text": speech,
@@ -114,7 +122,9 @@ def makeWeatherWebhookResult(data,time,req):
                                     " pressure " + data.get('pressure_mb'),
                             "short": "true"
                         }
-                    ]
+                    ],
+
+                    "thumb_url":url
                 }
             ]
         }
@@ -133,10 +143,12 @@ def makeWeatherWebhookResult(data,time,req):
                             "value": "Temp low/high " + str(data.get('low_c')) + "C/" + str(data.get('high_c'))+"C",
                             "short": "false"
                         }
-                    ]
+                    ],
+                    "thumb_url":url
                 }
             ]
         }
+    
     facebook_message = {
         "attachment": {
             "type": "template",
@@ -145,6 +157,7 @@ def makeWeatherWebhookResult(data,time,req):
                 "elements": [
                     {
                         "title": "Weather from The Weather Channel LLC:",
+                        "image_url": url,
                         "subtitle": speech,
                         "buttons": [
                             {
