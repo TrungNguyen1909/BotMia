@@ -71,9 +71,10 @@ def makeWeatherWebhookResult(data,time,req):
     if (location is None) or (item is None) or (units is None):
         return {}
         """
-
+    print(time)
     condition = data.get('condition')
     if condition is None:
+        print("Condition is None")
         return {}
 
     # print(json.dumps(item, indent=4))
