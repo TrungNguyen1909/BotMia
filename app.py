@@ -60,11 +60,11 @@ def processRequest(req):
             print("Reading current")
             data=a.read_current()
         print("Prepare to make webhook result.")
-        res = makeWebhookResult(data,time,req)
+        res = makeWeatherWebhookResult(data,time,req)
         return res
 
 def makeWeatherWebhookResult(data,time,req):
-    print("Making Webhook result")
+    print("Making Weather Webhook result")
     print(time)
     print(data)
     print(req)
