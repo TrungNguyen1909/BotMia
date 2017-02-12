@@ -45,7 +45,7 @@ def processRequest(req):
         if time=="future":
             data=a.read_forecast()
             for i in len(data)-1:
-                if datetime(req.get('result').get('parameters').get('date'))==data.[i].get('shortdate'):
+                if datetime(req.get('result').get('parameters').get('date'))==datetime(data[i].get('shortdate')):
                     data=data[i]
         else:
             data=a.read_current()
