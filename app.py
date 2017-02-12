@@ -44,6 +44,9 @@ def processRequest(req):
         a=pywu.ForecastData(args)
         if time=="future":
             data=a.read_forecast()
+            for i in len(data)-1:
+                if datetime(req.get('result').get('parameters').get('date'))==data.[i].get('shortdate'):
+                    data=data[i]
         else:
             data=a.read_current()
         res = makeWebhookResult(data,time,req)
@@ -68,7 +71,8 @@ def makeWeatherWebhookResult(data,time,req):
     if (location is None) or (item is None) or (units is None):
         return {}
         """
-    condition = item.get('condition')
+
+    condition = data.get('condition')
     if condition is None:
         return {}
 
