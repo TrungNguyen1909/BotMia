@@ -37,9 +37,9 @@ def processRequest(req):
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         print("checked file & directory")
         if req.get('result').get('parameters').get('geo-city') is None:
-            args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
+            args = type('obj', (object,), {'verbose' : True,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
-            args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
+            args = type('obj', (object,), {'verbose' : True,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         print("args made.")
         a=pywu.ForecastData(args)
         print("Fetched Data")
