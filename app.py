@@ -41,10 +41,10 @@ def processRequest(req):
         else:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         print("args made.")
-        if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
-            time="future"
-        else:
-            time="present"
+        #if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
+        #    time="future"
+        #else:
+        time="present"
         print(time)
         a=pywu.ForecastData(args)
         print("Fetcheed Data")
