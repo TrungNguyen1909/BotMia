@@ -3,7 +3,7 @@
 import urllib
 import json
 import os
-import pywu
+from pywu import pywu
 from flask import Flask
 from flask import request
 from flask import make_response
