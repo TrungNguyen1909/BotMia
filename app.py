@@ -31,18 +31,19 @@ def webhook():
 
 def processRequest(req):
     if req.get('result').get('action') == "weather.search":
-        a=pywu.ForecastData()
-
+        filename = '/tmp/pywu.cache.json'
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
         if req.get('result').get('parameters').get('geo-city') == None:
-            a.fetch_data("97fca79bb0f45e0e","autoip","en")
+            args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
-            a.fetch_data("97fca79bb0f45e0e",req.get('result').get('parameters').get('geo-city'),"en")
+            args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
             data=a.read_forecast()
             time="future"
         else:
             data=a.read_current()
             time="present"
+        a=pywu.ForecastData(args)
         res = makeWebhookResult(data,time,req)
         return res
 
@@ -72,16 +73,16 @@ def makeWeatherWebhookResult(data,time,req):
     # print(json.dumps(item, indent=4))
     if time=="present" and req.get('result').get('parameters').get('geo-city') is not None :
         speech = "Today in " + req.get('result').get('parameters').get('geo-city') + " is " + data.get('condition') + \
-             ", the temperature is " + data.get('temp_c')
+             ", the temperature is " + str(data.get('temp_c')) +"C"
     if time=="present" and req.get('result').get('parameters').get('geo-city') is None:
         speech = "Today at current location " + " is " + data.get('condition') + \
-             ", the temperature is " + data.get('temp_c')
+             ", the temperature is " + str(data.get('temp_c')) +"C"
     if time == "future" and req.get('result').get('parameters').get('geo-city') is not None:  
         speech = "The weather forecast in "+ req.get('result').get('parameters').get('geo-city') + " is " + data.get('condition') + \
-             ", the lowest temperature is " + data.get('low_c') + " and the highest one is " + data.get('high_c')
+             ", the lowest temperature is " + str(data.get('low_c')) + "C and the highest one is " + str(data.get('high_c')) +"C"
     if time == "future" and req.get('result').get('parameters').get('geo-city') is None:  
         speech = "The weather forecast at current location " + " is " + data.get("condition") + \
-             ", the lowest temperature is " + data.get('low_c') + " and the highest one is " + data.get('high_c')
+             ", the lowest temperature is " + str(data.get('low_c')) + "C and the highest one is " + str(data.get('high_c'))+"C"
     print("Response:")
     print(speech)
     if time=="present":
@@ -89,14 +90,14 @@ def makeWeatherWebhookResult(data,time,req):
             "text": speech,
             "attachments": [
                 {
-                    "title": "Weather from The Weather Channel LLC",
+                    "title": "Weather from The Weather Channel, LLC",
                     "title_link": "https://www.wunderground.com/?apiref=c2f87008ef83fd36",
                     "color": "#36a64f",
 
                     "fields": [
                         {
                             "title": "Condition",
-                            "value": "Temp " + data.get('temp_c'),
+                            "value": "Temp " + str(data.get('temp_c'))+"C",
                             "short": "false"
                         },
                         {
@@ -119,14 +120,14 @@ def makeWeatherWebhookResult(data,time,req):
             "text": speech,
             "attachments": [
                 {
-                    "title": "Weather from The Weather Channel LLC",
+                    "title": "Weather from The Weather Channel, LLC",
                     "title_link": "https://www.wunderground.com/?apiref=c2f87008ef83fd36",
                     "color": "#36a64f",
 
                     "fields": [
                         {
                             "title": "Condition",
-                            "value": "Temp low/high " + data.get('low_c') + "/" + data.get('high_c'),
+                            "value": "Temp low/high " + str(data.get('low_c')) + "C/" + str(data.get('high_c'))+"C",
                             "short": "false"
                         }
                     ]
