@@ -36,23 +36,26 @@ def processRequest(req):
         #filename = '/tmp/pywu.cache.json'
         #os.makedirs(os.path.dirname(filename), exist_ok=True)
         #print("checked file & directory")
-        if req.get('result').get('parameters').get('geo-city') == None:
+        if req.get('result').get('parameters').get('geo-city') is None:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         print("args made.")
-        #if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
-        #    time="future"
-        #else:
-        time="present"
-        print(time)
         a=pywu.ForecastData(args)
-        print("Fetcheed Data")
+        if req.get('result').get('parameters').get('date') != None:
+            if datetime.strptime(req.get('result').get('parameters').get('date'),'%Y-%m-%d') > datetime.now():
+                time="future"
+        else:
+            time="present"
+        print(time)
+        data=a.read_forecast()
+        print("Fetched Data")
         if time=="future":
             data=a.read_forecast()
-            for i in len(data)-1:
-                if datetime(req.get('result').get('parameters').get('date'))==datetime(data[i].get('shortdate')):
-                    data=data[i]
+            for i in data:
+                if datetime.strptime(req.get('result').get('parameters').get('date'),'%Y-%m-%d') ==datetime.strptime(i.get('shortdate'),'%m/%d/%Y'):
+                    data=i
+                    break
         else:
             data=a.read_current()
         res = makeWebhookResult(data,time,req)
