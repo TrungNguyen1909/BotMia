@@ -45,6 +45,7 @@ def processRequest(req):
             time="future"
         else:
             time="present"
+        print(time)
         a=pywu.ForecastData(args)
         print("Fetcheed Data")
         if time=="future":
