@@ -30,6 +30,7 @@ def webhook():
 
 
 def processRequest(req):
+    print("ProcessingRequest")
     if req.get('result').get('action') == "weather.search":
         filename = '/tmp/pywu.cache.json'
         os.makedirs(os.path.dirname(filename), exist_ok=True)
@@ -37,11 +38,13 @@ def processRequest(req):
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
+        print("args made.")
         if datetime(req.get('result').get('parameters').get('date')) > datetime.now():
             time="future"
         else:
             time="present"
         a=pywu.ForecastData(args)
+        print("Fetcheed Data")
         if time=="future":
             data=a.read_forecast()
             for i in len(data)-1:
@@ -53,24 +56,6 @@ def processRequest(req):
         return res
 
 def makeWeatherWebhookResult(data,time,req):
-    """query = data.get('query')
-    if query is None:
-        return {}
-
-    result = query.get('results')
-    if result is None:
-        return {}
-
-    channel = result.get('channel')
-    if channel is None:
-        return {}
-
-    item = channel.get('item')
-    location = channel.get('location')
-    units = channel.get('units')
-    if (location is None) or (item is None) or (units is None):
-        return {}
-        """
     print(time)
     condition = data.get('condition')
     if condition is None:
