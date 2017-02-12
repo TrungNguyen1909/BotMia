@@ -33,9 +33,9 @@ def processRequest(req):
     print("ProcessingRequest")
     if req.get('result').get('action') == "weather.search":
         print("weather.search Action chose")
-        filename = '/tmp/pywu.cache.json'
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        print("checked file & directory")
+        #filename = '/tmp/pywu.cache.json'
+        #os.makedirs(os.path.dirname(filename), exist_ok=True)
+        #print("checked file & directory")
         if req.get('result').get('parameters').get('geo-city') == None:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
