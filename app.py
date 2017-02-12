@@ -57,6 +57,7 @@ def processRequest(req):
                     data=i
                     break
         else:
+            print("Reading current")
             data=a.read_current()
         res = makeWebhookResult(data,time,req)
         return res
