@@ -36,14 +36,14 @@ def processRequest(req):
         filename = '/tmp/pywu.cache.json'
         os.makedirs(os.path.dirname(filename), exist_ok=True)
         print("checked file & directory")
-        if req.get('result').get('parameters').get('geo-city') is None:
+        if req.get('result').get('parameters').get('geo-city') =="":
             args = type('obj', (object,), {'verbose' : True,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
             args = type('obj', (object,), {'verbose' : True,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         print("args made.")
         a=pywu.ForecastData(args)
         print("Fetched Data")
-        if req.get('result').get('parameters').get('date') != None:
+        if req.get('result').get('parameters').get('date') !="":
             if datetime.strptime(req.get('result').get('parameters').get('date'),'%Y-%m-%d') > datetime.now():
                 time="future"
             else: time="present"
