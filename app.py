@@ -50,7 +50,6 @@ def processRequest(req):
         else:
             time="present"
         print(time)
-        data=a.read_forecast()
         if time=="future":
             data=a.read_forecast()
             for i in data:
