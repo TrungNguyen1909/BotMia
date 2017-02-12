@@ -33,23 +33,24 @@ def processRequest(req):
     print("ProcessingRequest")
     if req.get('result').get('action') == "weather.search":
         print("weather.search Action chose")
-        #filename = '/tmp/pywu.cache.json'
-        #os.makedirs(os.path.dirname(filename), exist_ok=True)
-        #print("checked file & directory")
+        filename = '/tmp/pywu.cache.json'
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        print("checked file & directory")
         if req.get('result').get('parameters').get('geo-city') is None:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':'autoip','language':'EN' , 'sub':"fetch"})
         else:
             args = type('obj', (object,), {'verbose' : False,'apikey':'97fca79bb0f45e0e','location':req.get('result').get('parameters').get('geo-city'),'language':'EN' , 'sub':"fetch"})
         print("args made.")
         a=pywu.ForecastData(args)
+        print("Fetched Data")
         if req.get('result').get('parameters').get('date') != None:
             if datetime.strptime(req.get('result').get('parameters').get('date'),'%Y-%m-%d') > datetime.now():
                 time="future"
+            else: time="present"
         else:
             time="present"
         print(time)
         data=a.read_forecast()
-        print("Fetched Data")
         if time=="future":
             data=a.read_forecast()
             for i in data:
