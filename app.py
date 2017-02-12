@@ -64,7 +64,10 @@ def processRequest(req):
         return res
 
 def makeWeatherWebhookResult(data,time,req):
+    print("Making Webhook result")
     print(time)
+    print(data)
+    print(req)
     condition = data.get('condition')
     if condition is None:
         print("Condition is None")
